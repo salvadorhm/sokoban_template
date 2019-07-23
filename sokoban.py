@@ -1,6 +1,6 @@
 '''
     Author: Salvador Hernandez Mendoza
-    Date: 11/07/2019
+    Date: 23/07/2019
     Description: Demo template for sokoban game
 
     Game simboles:
@@ -16,7 +16,7 @@ class Sokoban:
     '''
         Global variables
     '''
-    def __init__(self):
+    def __init__(self): # TODO agregar todas las variables
         self.map = [] # Game map
         self.position_x = 0 # Character position
 
@@ -24,7 +24,7 @@ class Sokoban:
         Create game level
     '''
     def createMap(self):
-        self.map = [2,1,1,1,0,1,1,1,2] # Create the map
+        self.map = [2,1,1,1,1,1,0,1,1,1,3,1,4,1,1,1,1,1,1,2] # Create the map
 
     '''
         Print the play map
@@ -43,22 +43,44 @@ class Sokoban:
     '''
         Left movement rules
     '''
-    def moveLeft(self):
-        if self.map[self.position_x - 1] == 1: # Evaluate if the next character position is a floor
-            tem_x = self.position_x # save the character position
-            self.position_x = self.position_x -1 # update the character position
-            self.map[tem_x] = 1 # put a floor
-            self.map[self.position_x] = 0 # move the character to next position
+    def moveLeft(self): # TODO corregirlo
+         # [0,1] -> [1,0] character, floor
+        if self.map[self.position_x] == 0 and self.map[self.position_x - 1] == 1:
+            self.map[self.position_x] = 1 # put floor character last position
+            self.map[self.position_x - 1] = 0 # move the character to next position
+            self.position_x = self.position_x - 1
+
+        # [0,3,1] -> [1,0,3] character, box, floor
+        elif self.map[self.position_x] == 0 and self.map[self.position_x - 1] == 3 and self.map[self.position_x - 2] == 1:
+            self.map[self.position_x] = 1 # put space in character last position
+            self.map[self.position_x - 1] = 0 # move the character to next position
+            self.map[self.position_x - 2] = 3 # move the character to next position
+            self.position_x = self.position_x - 1 # update the character position
 
     '''
         Right movement rules
     '''
-    def moveRight(self):
-        if self.map[self.position_x + 1] == 1: # Evaluate if the next character position is a floor
-            tem_x = self.position_x # save the character position
+    def moveRight(self): # TODO checar porque salta dos lugares
+        # [0,1] -> [1,0] character, floor
+        if self.map[self.position_x] == 0 and self.map[self.position_x + 1] == 1:
+            self.map[self.position_x] = 1 # put floor character last position
+            self.map[self.position_x + 1] = 0 # move the character to next position
+            self.position_x = self.position_x + 1
+
+        # [0,3,1] -> [1,0,3] character, box, floor
+        elif self.map[self.position_x] == 0 and self.map[self.position_x + 1] == 3 and self.map[self.position_x + 2] == 1:
+            self.map[self.position_x] = 1 # put space in character last position
+            self.map[self.position_x + 1] = 0 # move the character to next position
+            self.map[self.position_x + 2] = 3 # move the character to next position
             self.position_x = self.position_x + 1 # update the character position
-            self.map[tem_x] = 1 # put a floor
-            self.map[self.position_x] = 0 # move the character to next position
+        
+        # [0,3,4] -> [1,0,5] character, box, target
+        elif self.map[self.position_x] == 0 and self.map[self.position_x + 1] == 3 and self.map[self.position_x + 2] == 4:
+            self.map[self.position_x] = 1 # put space in character last position
+            self.map[self.position_x + 1] = 0 # move the character to next position
+            self.map[self.position_x + 2] = 5 # move the character to next position
+            self.position_x = self.position_x + 1 # update the character position
+
 
     '''
         Play the game - Main method of sokoban
